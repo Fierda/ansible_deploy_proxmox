@@ -1,0 +1,7 @@
+- name: Create Ubuntu VMs on Proxmox
+  hosts: Proxmox
+  gather_facts: false
+  vars_files:
+    - .env.yml
+  roles:
+    - create_vms

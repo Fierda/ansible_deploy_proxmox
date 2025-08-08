@@ -1,0 +1,27 @@
+- name: Create VM {{ item.name}}
+  community.general.proxmox_kvm:
+    api_user: root@pam
+    api_password: "{{ ansible_password }}"
+    api_host: "{{ ansible_host }}"
+    vmid: "{{ item.vmid }}"
+    name: "{{ item.name }}"
+    node: "proxmox"
+    cores: 4
+    memory: 16384
+    scsihw: virtio-scsi-pci
+    ide2: local:cloudinit
+    net0: virtio,bridge=vmbr0
+    ostype: l26
+    storage: local-lvm
+    iso: local:iso/ubuntu-24.04-live-server-amd64.iso
+    ciuser: Ubuntu
+    cipassword: ubuntu
+    citype: nocloud
+    nameserver: 8.8.8.8
+    searchdomain: local
+    ipconfig:
+      - ip="{{ item.ip }}"
+        gw=147.234.234.1
+  loop:
+    - { name: "vm01", vmid: 101, ip: "147.234.234.11/31" }
+    - { name: "vm02", vmid: 102, ip: "147.234.234.12/31" }
